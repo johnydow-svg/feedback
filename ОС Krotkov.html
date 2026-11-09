@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обратная связь — ДНК ФМИ</title>
+    <style>
+        :root {
+            --primary: #4a6cf7;
+            --primary-dark: #3a56d4;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #e0e6ed;
+            --success: #28a745;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .question-group {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #fafbfc;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .question-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .question-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        /* Scale Input */
+        .scale-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .scale-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .scale-input:hover {
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .scale-input.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .example-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 40px;
+        }
+
+        .example-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Text Inputs */
+        .text-input, .textarea-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .textarea-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .text-input:focus, .textarea-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .required-mark {
+            color: #e74c3c;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .form-body {
+                padding: 15px;
+            }
+            .scale-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Обратная связь — ДНК ФМИ</h1>
+        <p>Оцените вклад коллеги по ключевым ценностям компании</p>
+    </header>
+
+    <div class="form-body">
+        <form id="feedbackForm">
+            
+            <!-- Metadata -->
+            <div class="section-title">Основная информация</div>
+            
+            <div class="question-group">
+                <label class="question-label">Период оценки <span class="required-mark">*</span></label>
+                <input type="text" id="period" class="text-input" placeholder="Например: Q3 2023" required>
+            </div>
+
+            <div class="question-group">
+                <label class="question-label">Имя сотрудника <span class="required-mark">*</span></label>
+                <input type="text" id="employeeName" class="text-input" placeholder="Кому направляется обратная связь" required>
+            </div>
+
+            <div class="question-group">
+                <label class="question-label">Ваше имя <span class="required-mark">*</span></label>
+                <input type="text" id="userName" class="text-input" placeholder="Ваше ФИО" required>
+            </div>
+
+            <!-- Section 1: Values -->
+            <div class="section-title">1. Оценки по ценностям ФМИ</div>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px;">
+                Оцените каждую ценность по шкале от 1 до 5. 
+                <br><em>1 — не проявляется, 5 — ярко проявляется.</em>
+            </p>
+
+            <!-- Value 1: Осознанность -->
+            <div class="question-group">
+                <label class="question-label">Осознанность <span class="required-mark">*</span></label>
+                <div class="question-desc">Понимает, как её решения влияют на команду и других людей, и учитывает это в работе.</div>
+                <div class="scale-container" data-value-key="osoznannost">
+                    <button type="button" class="scale-input" value="1">1</button>
+                    <button type="button" class="scale-input" value="2">2</button>
+                    <button type="button" class="scale-input" value="3">3</button>
+                    <button type="button" class="scale-input" value="4">4</button>
+                    <button type="button" class="scale-input" value="5">5</button>
+                </div>
+                <textarea id="ex_osoznannost" class="example-input" placeholder="При желании поделись примером..."></textarea>
+            </div>
+
+            <!-- Value 2: Инклюзивность -->
+            <div class="question-group">
+                <label class="question-label">Инклюзивность <span class="required-mark">*</span></label>
+                <div class="question-desc">Активно слушает разные точки зрения и учитывает их при принятии решений.</div>
+                <div class="scale-container" data-value-key="inklyuzivnost">
+                    <button type="button" class="scale-input" value="1">1</button>
+                    <button type="button" class="scale-input" value="2">2</button>
+                    <button type="button" class="scale-input" value="3">3</button>
+                    <button type="button" class="scale-input" value="4">4</button>
+                    <button type="button" class="scale-input" value="5">5</button>
+                </div>
+                <textarea id="ex_inklyuzivnost" class="example-input" placeholder="При желании поделись примером..."></textarea>
+            </div>
+
+            <!-- Value 3: Эмпатия -->
+            <div class="question-group">
+                <label class="question-label">Эмпатия <span class="required-mark">*</span></label>
+                <div class="question-desc">Проявляет заботу о коллегах, замечает их потребности и реагирует на них.</div>
+                <div class="scale-container" data-value-key="empatia">
+                    <button type="button" class="scale-input" value="1">1</button>
+                    <button type="button" class="scale-input" value="2">2</button>
+                    <button type="button" class="scale-input" value="3">3</button>
+                    <button type="button" class="scale-input" value="4">4</button>
+                    <button type="button" class="scale-input" value="5">5</button>
+                </div>
+                <textarea id="ex_empatia" class="example-input" placeholder="При желании поделись примером..."></textarea>
+            </div>
+
+            <!-- Value 4: Доверие -->
+            <div class="question-group">
+                <label class="question-label">Доверие <span class="required-mark">*</span></label>
+                <div class="question-desc">Действует прозрачно и честно, с ней легко строить доверительные отношения.</div>
+                <div class="scale-container" data-value-key="doverie">
+                    <button type="button" class="scale-input" value="1">1</button>
+                    <button type="button" class="scale-input" value="2">2</button>
+                    <button type="button" class="scale-input" value="3">3</button>
+                    <button type="button" class="scale-input" value="4">4</button>
+                    <button type="button" class="scale-input" value="5">5</button>
+                </div>
+                <textarea id="ex_doverie" class="example-input" placeholder="При желании поделись примером..."></textarea>
+            </div>
+
+            <!-- Value 5: Сотрудничество -->
+            <div class="question-group">
+                <label class="question-label">Сотрудничество <span class="required-mark">*</span></label>
+                <div class="question-desc">Готова отступить от своего эго ради общей цели, разрушает барьеры между ролями и отделами.</div>
+                <div class="scale-container" data-value-key="sotrudnichestvo">
+                    <button type="button" class="scale-input" value="1">1</button>
+                    <button type="button" class="scale-input" value="2">2</button>
+                    <button type="button" class="scale-input" value="3">3</button>
+                    <button type="button" class="scale-input" value="4">4</button>
+                    <button type="button" class="scale-input" value="5">5</button>
+                </div>
+                <textarea id="ex_sotrudnichestvo" class="example-input" placeholder="При желании поделись примером..."></textarea>
+            </div>
+
+            <!-- Value 6: Признание -->
+            <div class="question-group">
+                <label class="question-label">Признание <span class="required-mark">*</span></label>
+                <div class="question-desc">Отмечает и ценит вклад коллег, не присваивает чужие заслуги.</div>
+                <div class="scale-container" data-value-key="priznanie">
+                    <button type="button" class="scale-input" value="1">1</button>
+                    <button type="button" class="scale-input" value="2">2</button>
+                    <button type="button" class="scale-input" value="3">3</button>
+                    <button type="button" class="scale-input" value="4">4</button>
+                    <button type="button" class="scale-input" value="5">5</button>
+                </div>
+                <textarea id="ex_priznanie" class="example-input" placeholder="При желании поделись примером..."></textarea>
+            </div>
+
+            <!-- Value 7: Готовность к вызовам -->
+            <div class="question-group">
+                <label class="question-label">Готовность к вызовам <span class="required-mark">*</span></label>
+                <div class="question-desc">Смело берётся за нестандартные задачи и ищет прорывные решения.</div>
+                <div class="scale-container" data-value-key="gotovnost">
+                    <button type="button" class="scale-input" value="1">1</button>
+                    <button type="button" class="scale-input" value="2">2</button>
+                    <button type="button" class="scale-input" value="3">3</button>
+                    <button type="button" class="scale-input" value="4">4</button>
+                    <button type="button" class="scale-input" value="5">5</button>
+                </div>
+                <textarea id="ex_gotovnost" class="example-input" placeholder="При желании поделись примером..."></textarea>
+            </div>
+
+            <!-- Value 8: Гибкость -->
+            <div class="question-group">
+                <label class="question-label">Гибкость <span class="required-mark">*</span></label>
+                <div class="question-desc">Быстро адаптируется к изменениям, экспериментирует и учится на ошибках.</div>
+                <div class="scale-container" data-value-key="gibkost">
+                    <button type="button" class="scale-input" value="1">1</button>
+                    <button type="button" class="scale-input" value="2">2</button>
+                    <button type="button" class="scale-input" value="3">3</button>
+                    <button type="button" class="scale-input" value="4">4</button>
+                    <button type="button" class="scale-input" value="5">5</button>
+                </div>
+                <textarea id="ex_gibkost" class="example-input" placeholder="При желании поделись примером..."></textarea>
+            </div>
+
+            <!-- Value 9: Нацеленность на результат -->
+            <div class="question-group">
+                <label class="question-label">Нацеленность на результат <span class="required-mark">*</span></label>
+                <div class="question-desc">Доводит дела до конца и добивается поставленных целей даже при препятствиях.</div>
+                <div class="scale-container" data-value-key="rezultat">
+                    <button type="button" class="scale-input" value="1">1</button>
+                    <button type="button" class="scale-input" value="2">2</button>
+                    <button type="button" class="scale-input" value="3">3</button>
+                    <button type="button" class="scale-input" value="4">4</button>
+                    <button type="button" class="scale-input" value="5">5</button>
+                </div>
+                <textarea id="ex_rezultat" class="example-input" placeholder="При желании поделись примером..."></textarea>
+            </div>
+
+            <!-- Section 2: Open Questions -->
+            <div class="section-title">2. Открытые вопросы</div>
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px;">
+                Ответьте в свободной форме. Чем конкретнее, тем ценнее.
+            </p>
+
+            <div class="question-group">
+                <label class="question-label">Сильные стороны <span class="required-mark">*</span></label>
+                <div class="question-desc">Какие 2–3 качества или навыка вы считаете главными сильными сторонами? Что делается особенно хорошо?</div>
+                <textarea id="q_strong" class="textarea-input" required></textarea>
+            </div>
+
+            <div class="question-group">
+                <label class="question-label">Совет для роста <span class="required-mark">*</span></label>
+                <div class="question-desc">Если бы вы могли дать один совет для профессионального развития, что бы это было?</div>
+                <textarea id="q_advice" class="textarea-input" required></textarea>
+            </div>
+
+            <div class="question-group">
+                <label class="question-label">Позитивный кейс <span class="required-mark">*</span></label>
+                <div class="question-desc">Опишите конкретную ситуацию, когда работа произвела на вас положительное впечатление.</div>
+                <textarea id="q_positive" class="textarea-input" required></textarea>
+            </div>
+
+            <div class="question-group">
+                <label class="question-label">Точка роста <span class="required-mark">*</span></label>
+                <div class="question-desc">Есть ли ситуация, где результат мог быть достигнут иначе? Какой навык стоит прокачать?</div>
+                <textarea id="q_growth" class="textarea-input" required></textarea>
+            </div>
+
+            <div class="question-group">
+                <label class="question-label">Комментарий</label>
+                <div class="question-desc">Есть ли что-то ещё, что вы хотели бы сказать о нашем сотрудничестве?</div>
+                <textarea id="q_comment" class="textarea-input"></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn">Отправить обратную связь</button>
+            <div class="footer-note">
+                Нажимая кнопку, вы соглашаетесь с обработкой данных для внутренних нужд компании.
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    // НАСТРОЙКИ: Укажите сюда адрес почты, на который будут приходить ответы
+    const EMAIL = "sergey.krotkov@pmru.com"; 
+
+    // Логика выбора шкалы
+    document.querySelectorAll('.scale-container').forEach(container => {
+        const buttons = container.querySelectorAll('.scale-input');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Снимаем класс selected со всех кнопок в этом контейнере
+                buttons.forEach(b => b.classList.remove('selected'));
+                // Добавляем класс выбранной кнопке
+                btn.classList.add('selected');
+            });
+        });
+    });
+
+    // Обработка отправки формы
+    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Проверка обязательных полей (простой контроль)
+        const requiredFields = ['period', 'employeeName', 'userName', 'q_strong', 'q_advice', 'q_positive', 'q_growth'];
+        for (let id of requiredFields) {
+            if (!document.getElementById(id).value.trim()) {
+                alert(`Пожалуйста, заполните поле: ${id}`);
+                return;
+            }
+        }
+
+        // Сбор данных
+        let emailBody = `НОВАЯ ОБРАТНАЯ СВЯЗЬ - ДНК ФМИ\n`;
+        emailBody += `================================\n\n`;
+        
+        emailBody += `Период: ${document.getElementById('period').value}\n`;
+        emailBody += `Сотрудник: ${document.getElementById('employeeName').value}\n`;
+        emailBody += `Ответил: ${document.getElementById('userName').value}\n\n`;
+        
+        emailBody += `--- ОЦЕНКИ ПО ЦЕННОСТЯМ ---\n`;
+        
+        const values = [
+            { key: 'osoznannost', name: 'Осознанность' },
+            { key: 'inklyuzivnost', name: 'Инклюзивность' },
+            { key: 'empatia', name: 'Эмпатия' },
+            { key: 'doverie', name: 'Доверие' },
+            { key: 'sotrudnichestvo', name: 'Сотрудничество' },
+            { key: 'priznanie', name: 'Признание' },
+            { key: 'gotovnost', name: 'Готовность к вызовам' },
+            { key: 'gibkost', name: 'Гибкость' },
+            { key: 'rezultat', name: 'Нацеленность на результат' }
+        ];
+
+        values.forEach(val => {
+            const container = document.querySelector(`[data-value-key="${val.key}"]`);
+            const selectedBtn = container.querySelector('.scale-input.selected');
+            const score = selectedBtn ? selectedBtn.value : 'Не оценено';
+            const example = document.getElementById(`ex_${val.key}`).value || '—';
+            
+            emailBody += `${val.name}: ${score}/5\n`;
+            if (example !== '—') {
+                emailBody += `   Пример: ${example}\n`;
+            }
+            emailBody += `\n`;
+        });
+
+        emailBody += `--- ОТКРЫТЫЕ ВОПРОСЫ ---\n\n`;
+        emailBody += `1. Сильные стороны:\n${document.getElementById('q_strong').value}\n\n`;
+        emailBody += `2. Совет для роста:\n${document.getElementById('q_advice').value}\n\n`;
+        emailBody += `3. Позитивный кейс:\n${document.getElementById('q_positive').value}\n\n`;
+        emailBody += `4. Точка роста:\n${document.getElementById('q_growth').value}\n\n`;
+        
+        const comment = document.getElementById('q_comment').value;
+        if (comment) {
+            emailBody += `5. Комментарий:\n${comment}\n\n`;
+        }
+
+        emailBody += `================================\n`;
+        emailBody += `Дата отправки: ${new Date().toLocaleString('ru-RU')}`;
+
+        // Открываем почтовый клиент
+        const subject = encodeURIComponent(`Обратная связь: ${document.getElementById('employeeName').value} (${document.getElementById('period').value})`);
+        const body = encodeURIComponent(emailBody);
+        
+        window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+    });
+</script>
+
+</body>
+</html>
